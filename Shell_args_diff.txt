@@ -16,3 +16,14 @@ $?:脚本退出码
 
 $() 等同于``(反引号):运行一段命令
 $(())进行数字运算
+
+
+//截取key_str1和key_str2之间的字符(不包括key_str1和key_str2)
+cat log | sed 's/.*key_str1\(.*\)key_str2.*/\1/g'
+\(和\)表示把括号中的内容剔除出来，会依次放到\1 \2 \3这些变量中
+s/A/B就是B替换A
+计算和与平均值：
+cat Pytorch_log.txt | grep -E '408/408|51/51|13/13' | sed 's/.* \(.*\)it.*/\1/g' | awk '{sum+=$1} END {print"Sum=" sum;print"Aver=" sum/NR}'
+
+只查看文件的第20行到30行的内容：
+awk '{if(NR>=20 && NR <=30) print $0}' test.txt   //$0查看整行
