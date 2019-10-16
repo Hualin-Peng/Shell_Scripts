@@ -17,6 +17,11 @@ $?:脚本退出码
 $() 等同于``(反引号):运行一段命令
 $(())进行数字运算
 
+repeat函数
+repeat() {while true; do $@ && return; done}
+改进：
+repeat() {while :;do $@ && return; done} //shell内建命令：，该命令的退出状态总是为0
+
 
 //截取key_str1和key_str2之间的字符(不包括key_str1和key_str2)
 cat log | sed 's/.*key_str1\(.*\)key_str2.*/\1/g'
