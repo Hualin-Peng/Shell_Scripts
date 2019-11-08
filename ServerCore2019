@@ -1,0 +1,45 @@
+###################### ServerCore Config #########################
+Run in ServerCore shell:
+    sconfig
+enter 2 change Computer as ServerCore
+enter 4 enable Remote Management
+enter 7 enable  Remote Desktop
+
+Run in ServerCore PowerShell:
+Enable-PSRemoting
+Enable-WSManCredSSP -Role server
+winrm set winrm/config/client @{TrustedHosts="*"}
+netsh advfirewall set allprofiles state off    //turn firewall off
+Install-WindowsFeature -Name Hyper-V -IncludeManagementTools    //Install Hyper-V related features
+
+
+###################### Host Config #########################
+Install ServerManager and Hyper-V Manager Tool on your host
+https://www.microsoft.com/en-gb/download/details.aspx?id=45520 //Server Manager Download link
+
+Run in host PowerShell:
+Enable-WindowsOptionalFeature -online -FeatureName Microsoft-Hyper-V-Tools-All
+Set-Item WSMan:\localhost\Client\TrustedHosts "*" -Force
+
+Run in host Shell:
+gpedit:
+Administrative Templates->System->Credentials Delegation:
+1.Allow delegation fresh credentials->Enable->show->add :WSMAN/*
+2.Allow delegating fresh credentials with NTLM-only server authentication->Enable->show->add :WSMAN/*
+
+Conif Host File:
+C:windows\system32\drivers\etc\hosts
+add: ${ServerCore Ip} ${ServerCore Server name} in hosts File //eg: 10.239.91.171 servercore2019
+reboot your host
+
+###################### Connect Server Manager and Hyper-V manager tool with servercore #########################
+Connect ServerManager:
+Open server manager->Manage->Add Servers->DNS input ServerCore IpAddr
+Right click servercore on DashBoard->Manager as->input username and servercore's password
+Note:
+username format:${ServerCoreIpAddr}\Administrator //eg:10.239.91.171\Administrator
+Connect Hyper-V manager:
+Action->Connect to server->another computer:
+Input ServerCore IpAddr:10.239.91.171
+Select Option Connect as another user:
+username format:${ServerCoreIpAddr}\Administrator //eg:10.239.91.171\Administrator
