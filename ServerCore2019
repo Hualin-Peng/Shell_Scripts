@@ -5,10 +5,13 @@ enter 2 change Computer as ServerCore
 enter 4 enable Remote Management
 enter 7 enable  Remote Desktop
 
+Run in ServerCore Shell:
+winrm set winrm/config/client @{TrustedHosts="*"}
+
 Run in ServerCore PowerShell:
 Enable-PSRemoting
 Enable-WSManCredSSP -Role server
-winrm set winrm/config/client @{TrustedHosts="*"}
+
 netsh advfirewall set allprofiles state off    //turn firewall off
 Install-WindowsFeature -Name Hyper-V -IncludeManagementTools    //Install Hyper-V related features
 
