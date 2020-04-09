@@ -1,0 +1,18 @@
+docker rm  -f  CONTAINER_ID
+docker rmi Image_ID
+删除所有以及结束的容器
+docker ps -a | grep 'Exited' | awk '{print $1}' | xargs docker stop | xargs docker rm
+删除所有无用的镜像
+docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi
+==========================================================================================
+docker启动命令,docker重启命令,docker关闭命令
+
+启动        systemctl start docker
+守护进程重启   sudo systemctl daemon-reload
+重启docker服务   systemctl restart  docker
+重启docker服务  sudo service docker restart
+关闭docker   service docker stop   
+关闭docker  systemctl stop docker
+============================================================================================
+wget --no-check-certificate -i url.txt
+cpupower frequency-set -g performance
