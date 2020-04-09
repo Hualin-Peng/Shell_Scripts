@@ -1,6 +1,12 @@
 Mce:
 abrt-cli list |grep mce
 
+Linux and Windows 自动登录
+control userpasswords2
+Vim /etc/gdm/custom.conf
+Add: AutomaticLoginEnable=True
+AutomaticLogin=root
+
 
 修改Mac地址：
 1.进入EFI shell
