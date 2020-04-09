@@ -1,0 +1,44 @@
+1. Enable OS log
+在 redhat  系统上，将GRUB_CMDLINE_LINUX参数改成如下可在putty端看到系统boot log
+vim /etc/default/grub
+GRUB_CMDLINE_LINUX="crashkernel=auto console=ttyS0,115200 debug loglevel=7 console=tty0 "
+然后执行: grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg 
+======================================================================================
+
+======================================================================================
+dmidecode : -t 参数按指定 参数输出相关信息
+查看 bios
+dmidecode -t bios
+dmidecode -t bios | grep -i "version"
+
+查看memeory dmidecode -t memory
+
+=================================================================
+SE-Linux:
+
+查看selinux的状态
+sestatus
+临时关闭命令：
+setenforce 0
+查看是否关闭成功：
+getenforce
+配置文件：
+/etc/selinux/config
+Log 路径：
+/var/log/message
+/var/log/audit/audit.log
+
+=========================================================================================
+https://linux-ftp.sh.intel.com/pub/ISO/redhat/redhat-rhel/ 
+
+ipmctl.efi delete -f -namespace
+
+[‎11/‎27/‎2018 1:26 PM] Zhang, GuoyanX: 
+df -h
+umount /home
+ lvreduce -L 20G /dev/mapper/rhel-home
+注：lvreduce -L 20G的意思为设置当前文件系统为20G，
+lvextend -L +280G /dev/mapper/rhel-root   //280G为 减去20G后的空间，根据实际情况动态调整
+xfs_growfs /dev/mapper/rhel-root
+mkfs.xfs -f /dev/mapper/rhel-home
+mount /home
