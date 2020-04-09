@@ -1,0 +1,50 @@
+Docker常用命令：
+在docker上跑了挺久的训练了，现在总结一下训练中常用到的一些命令，也方便以后用到。
+
+docker images
+
+查看服务器本地镜像
+
+docker pull
+
+远程拉去镜像，比如docker pull ubuntu:16.04拉取一个Ubuntu16.04的镜像到本地
+
+docker run -it --runtime=nvidia --shm-size 1g --name test ubuntu:16.04 /bin/bash
+
+创建并运行一个容器 -it表示开启输入转到容器终端，--runtime=nvidia表示启用GPU，不然会找不到GPU，--shm-size 1g表示设置共享内存1g，不然训练过程中可能共享内存不够导致中断训练，--name test表示取别名test，方便使用，ubuntu:16.04表示使用镜像
+
+docker ps
+
+查看活着的容器
+
+docker ps -a
+
+查看所有容器
+
+docker cp 本地地址（别名|容器ID:地址） 别名|容器ID:地址（本地地址）
+
+用于本地和容器之间的文件传输
+
+docker attach 容器ID|别名
+
+进入容器
+
+docker exec -it 别名|容器ID /bin/bash
+
+进入容器
+
+docker save 镜像 > 文件
+
+将镜像打包，用于环境迁移
+
+docker restart 容器ID|别名
+
+用于重启一个停止的容器
+
+docker commit -m '注释' 容器ID 镜像名称:镜像版本
+
+         用与配置环境后生成新镜像
+
+docker load < 文件
+
+用于载入镜像
