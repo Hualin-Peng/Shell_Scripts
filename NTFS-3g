@@ -1,0 +1,43 @@
+在linux下安装软件包的时候,有时候提示
+configure: error: newly created file is older than distributed files!
+Check your system clock
+出现此编译错误，请检查你的系统时间是否设置有误
+查看硬件日期时间
+hwclock -show
+linux是每隔一段时间将系统时间写入 硬件bois的 如果刚设置完了就关机,开机后时间还是等于没有设置
+# date -s 991128
+Sun Nov 28 00:00:00 CST 1999
+实例：设置时间伟2008年8月8号12:00
+# date -s “2008-08-08 12:00:00″
+修改完后,记得输入:
+clock -w
+把系统时间写入CMOS即可
+Linux 查看U盘
+ls   /dev/sd*
+
+1.解压ntfs-3g
+tar -zxvf   *.gz
+2.
+    ./configure
+    make
+    make install
+
+Installation
+Linux: Most distributions include and use NTFS-3G by default. Please use that one unless it’s an old version. If you wish to install NTFS-3G from the source code then make sure you have installed the basic development tools (gcc compiler, libc-dev libraries). Then type:
+
+./configure
+make
+make install # or 'sudo make install' if you aren't root
+
+Non-Linux: Please see the OS specific installation and source packages above.
+
+Usage
+If there was no error during installation then the NTFS volume can be mounted in read-write mode for everybody as follows. Unmount the volume if it had already been mounted, replace /dev/sda1 and /mnt/windows, if needed.
+
+mount -t ntfs-3g /dev/sda1 /mnt/windows
+
+Please see the NTFS-3G Manual for more options and examples.
+
+You can also make NTFS to be mounted during boot by adding the following line to the end of the /etc/fstab file:
+
+/dev/sda1 /mnt/windows ntfs-3g defaults 0 0
