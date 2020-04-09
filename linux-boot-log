@@ -1,3 +1,12 @@
+Mce:
+abrt-cli list |grep mce
+
+
+修改Mac地址：
+1.进入EFI shell
+2.Eeupdate.efi /Nic=1 /mac=9049FA01:D4:C2
+
+
 1. Enable OS log
 在 redhat  系统上，将GRUB_CMDLINE_LINUX参数改成如下可在putty端看到系统boot log
 vim /etc/default/grub
