@@ -1,3 +1,6 @@
+git checkout commit-id -b branch-name //切换到某个branch的某个commit-id
+git branch -D master //删除目标分支
+
 利用git上传本地文件、文件夹到Github：
   第一步：安装git工具
   第二步：上传本地文件
