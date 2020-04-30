@@ -1,4 +1,6 @@
-git checkout commit-id -b branch-name //切换到某个branch的某个commit-id
+切换到某个branch的某个commit-id：
+  先切换commit-id，再切换branch：
+  git checkout <commit-id> && git checkout <branch-name>
 git branch -D master //删除目标分支
 git remote -v //查看远程仓库的地址
 
