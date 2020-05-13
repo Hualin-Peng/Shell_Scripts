@@ -6,3 +6,6 @@ screen -d -r yourname -> 结束当前session并回到yourname这个session
 
 Linux软链接
 ln -s /root/tensorflow/dataset /home/dataset/tensorflow/dataset //为/root/tensorflow/dataset 在/home/dataset/tensorflow/下建立名为dataset的软链接
+
+============
+https://jalammar.github.io/illustrated-transformer/ 
