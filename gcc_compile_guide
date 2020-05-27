@@ -1,0 +1,76 @@
+#GCC 5.3 Compile Guide
+
+cd /opt nad Download needed packages:
+wget http://ftp.gnu.org/gnu/gcc/gcc-5.3.0/gcc-5.3.0.tar.gz
+wget http://ftp.gnu.org/pub/gnu/gmp/gmp-6.1.2.tar.xz
+wget http://ftp.gnu.org/pub/gnu/mpfr/mpfr-3.1.6.tar.gz
+wget http://ftp.gnu.org/pub/gnu/mpc/mpc-1.1.0.tar.gz
+
+==================
+Install GMP 6.1.2
+#xz -d gmp-6.1.2.tar.xz && tar -xvf gmp-6.1.2.tar && cd /opt/gmp-6.1.2
+#mkdir /usr/local/gmp-6.1.2 && ./configure --prefix=/usr/local/gmp-6.1.2
+#make
+#make install
+
+==================
+Install Install MPFR 3.1.6
+#tar -zxvf mpfr-3.1.6.tar.gz && cd /opt/mpfr-3.1.6
+#mkdir /usr/local/mpfr-3.1.6 && ./configure --prefix=/usr/local/mpfr-3.1.6 --with-gmp=/usr/local/gmp-6.1.2
+#make
+#make install
+
+==================
+Install MPC 1.1.0
+#tar -zxvf mpc-1.1.0.tar.gz && cd /opt/mpc-1.1.0
+#mkdir /usr/local/mpc-1.1.0 && ./configure --prefix=/usr/local/mpc-1.1.0 --with-gmp=/usr/local/gmp-6.1.2 --with-mpfr=/usr/local/mpfr-3.1.6
+#make
+#make install
+
+==================
+#tar -zxvf gcc-5.3.0.tar.gz && cd /opt/gcc-5.3.0
+#mkdir /usr/local/gcc-5.3.0/ && ./configure --prefix=/usr/local/gcc-5.3.0 -enable-threads=posix -disable-checking -disable-multilib -enable-languages=c,c++ --with-gmp=/usr/local/gmp-6.1.2 --with-mpfr=/usr/local/mpfr-3.1.6 --with-mpc=/usr/local/mpc-1.1.0
+#make
+#make install
+
+
+##GCC 8.4 Compile Guide
+cd /opt nad Download needed packages:
+wget https://mirrors.sjtug.sjtu.edu.cn/gnu/gcc/gcc-8.4.0/gcc-8.4.0.tar.gz
+wget https://mirrors.sjtug.sjtu.edu.cn/gnu/gmp/gmp-6.1.2.tar.xz
+wget https://mirrors.sjtug.sjtu.edu.cn/gnu/mpfr/mpfr-4.0.2.tar.gz
+wget https://mirrors.sjtug.sjtu.edu.cn/gnu/mpc/mpc-1.1.0.tar.gz
+
+==================
+Install GMP 6.1.2
+#xz -d gmp-6.1.2.tar.xz && tar -xvf gmp-6.1.2.tar && cd /opt/gmp-6.1.2
+#mkdir /usr/local/gmp-6.1.2 && ./configure --prefix=/usr/local/gmp-6.1.2
+#make
+#make install
+
+==================
+Install Install MPFR 4.0.2
+#tar -zxvf mpfr-4.0.2.tar.gz && cd /opt/mpfr-4.0.2
+#mkdir /usr/local/mpfr-4.0.2 && ./configure --prefix=/usr/local/mpfr-4.0.2 --with-gmp=/usr/local/gmp-6.1.2
+#make
+#make install
+
+==================
+Install MPC 1.1.0
+#tar -zxvf mpc-1.1.0.tar.gz && cd /opt/mpc-1.1.0
+#mkdir /usr/local/mpc-1.1.0 && ./configure --prefix=/usr/local/mpc-1.1.0 --with-gmp=/usr/local/gmp-6.1.2 --with-mpfr=/usr/local/mpfr-4.0.2
+#make
+#make install
+
+==================
+#tar -zxvf gcc-8.4.0.tar.gz && cd /opt/gcc-8.4.0
+#export LD_LIBRARY_PATH=/usr/local/gmp-6.1.2/lib:/usr/local/mpfr-4.0.2/lib:/usr/local/mpc-1.1.0/lib:$LD_LIBRARY_PATH
+#mkdir /usr/local/gcc-8.4.0/ && ./configure --prefix=/usr/local/gcc-8.4.0 -enable-threads=posix -disable-checking -disable-multilib -enable-languages=c,c++ --with-gmp=/usr/local/gmp-6.1.2 --with-mpfr=/usr/local/mpfr-4.0.2 --with-mpc=/usr/local/mpc-1.1.0
+#make
+#make install
+
+Note:
+if :
+    error while loading shared libraries: libmpfr.so.6: cannot open shared object file: No such file or directory
+do before configure gcc8.4 and make gcc8.4:
+    export LD_LIBRARY_PATH=/usr/local/gmp-6.1.2/lib:/usr/local/mpfr-4.0.2/lib:/usr/local/mpc-1.1.0/lib:$LD_LIBRARY_PATH
