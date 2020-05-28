@@ -1,3 +1,16 @@
+xport PATH=/usr/local/gcc-8.4.0/bin:$PATH
+
+export LD_LIBRARY_PATH=/usr/local/gcc-8.4.0/lib64:$LD_LIBRARY_PATH
+
+alternatives --config python
+python3 -m pip install -U --user virtualenv
+
+find / -name virtualenv
+/root/.local/bin/virtualenv
+/usr/bin/python3
+/root/.local/bin/virtualenv -p /usr/bin/python3 venv
+============================================================
+
 #GCC 5.3 Compile Guide
 
 cd /opt nad Download needed packages:
