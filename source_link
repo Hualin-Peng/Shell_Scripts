@@ -1,2 +1,21 @@
 https://fantianzuo.blog.csdn.net/article/details/106322978#t30
 https://zhuanlan.zhihu.com/p/93530380
+
+
+void NQueen(int record[], int n){
+
+    int i,j,k;
+    for(i=0; i<n; i++){ //row
+        for(j=0; j<n; j++){ //column
+            for(k=0; k<n; k++){
+                if(j == record[k] || abs(record[k]-j)==abs(i-k)){
+                    break;
+                }
+                else{
+                    record[k]=j;
+                }
+            }
+        }
+        print(record);
+    }
+}
