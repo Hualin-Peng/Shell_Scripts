@@ -1,21 +1,51 @@
 https://fantianzuo.blog.csdn.net/article/details/106322978#t30
 https://zhuanlan.zhihu.com/p/93530380
+https://www.cnblogs.com/houkai/p/3480940.html
+https://www.jianshu.com/p/bb123944d3e5
 
+# include <stdio.h>
+# include <math.h>
+
+int count = 0;
+enum BOOL {false, true};
+
+enum BOOL check(int record[], int i, int j){ //ith row, jth column
+    int k = 0;
+    while(k<i-1){
+        if(record[k]==j || fabs(j-record[k])==fabs(i-k))
+            return false;
+        k++;
+    }
+    return true;
+}
+
+void placeQueen(int record[], int k, int n){
+    if(k>n){
+        for(int i=0; i<n; i++){
+            printf("%d ", record[i]);
+            //record[i]=0;
+        }
+        printf("\n");
+        count++;
+    }else{
+        for(int i=1; i<=n; i++){
+            if(check(record, k-1, i)==1){
+                record[k-1] = i;
+                placeQueen(record, k+1, n);
+            }
+            else
+                ;
+        }
+    }
+}
 
 void NQueen(int record[], int n){
+    placeQueen(record, 1, n);
+}
 
-    int i,j,k;
-    for(i=0; i<n; i++){ //row
-        for(j=0; j<n; j++){ //column
-            for(k=0; k<n; k++){
-                if(j == record[k] || abs(record[k]-j)==abs(i-k)){
-                    break;
-                }
-                else{
-                    record[k]=j;
-                }
-            }
-        }
-        print(record);
-    }
+int main(){
+    int record[8] = {0};
+    NQueen(record, 8);
+
+    return 0;
 }
