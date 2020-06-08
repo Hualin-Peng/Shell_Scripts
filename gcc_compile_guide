@@ -1,4 +1,6 @@
-xport PATH=/usr/local/gcc-8.4.0/bin:$PATH
+https://www.cnblogs.com/liushui0306/p/12517302.html
+
+export PATH=/usr/local/gcc-8.4.0/bin:$PATH
 
 export LD_LIBRARY_PATH=/usr/local/gcc-8.4.0/lib64:$LD_LIBRARY_PATH
 
