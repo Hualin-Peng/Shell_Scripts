@@ -57,3 +57,217 @@ lvextend -L +280G /dev/mapper/rhel-root   //280G为 减去20G后的空间，根�
 xfs_growfs /dev/mapper/rhel-root
 mkfs.xfs -f /dev/mapper/rhel-home
 mount /home
+========================================================================================
+文件系统容量扩展：
+使用parted查看未分配空间：
+[root@kerberos ~]# parted
+GNU Parted 3.1
+Using /dev/sda
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+(parted)
+(parted)
+(parted) print free
+Model: ATA WDC WD600PF4PZ-4 (scsi)
+Disk /dev/sda: 6101GB
+Sector size (logical/physical): 512B/4096B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End     Size    File system  Name                  Flags
+        17.4kB  1049kB  1031kB  Free Space
+ 1      1049kB  211MB   210MB   fat16        EFI System Partition  boot
+ 2      211MB   1285MB  1074MB  xfs
+ 3      1285MB  1000GB  999GB                                      lvm
+        1000GB  6101GB  5101GB  Free Space
+ 创建新分区：
+ (parted) mkpart
+Partition name?  []? 4
+File system type?  [ext2]? ext4
+Start? 1000GB
+End? 6101GB
+(parted) print
+Model: ATA WDC WD600PF4PZ-4 (scsi)
+Disk /dev/sda: 6101GB
+Sector size (logical/physical): 512B/4096B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End     Size    File system  Name                  Flags
+ 1      1049kB  211MB   210MB   fat16        EFI System Partition  boot
+ 2      211MB   1285MB  1074MB  xfs
+ 3      1285MB  1000GB  999GB                                      lvm
+ 4      1000GB  6101GB  5101GB  ext4         4
+
+(parted) quit
+查看新的分区：
+[root@kerberos ~]# fdisk -l
+WARNING: fdisk GPT support is currently new, and therefore in an experimental phase. Use at your own discretion.
+
+Disk /dev/sda: 6101.2 GB, 6101194530816 bytes, 11916395568 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disk label type: gpt
+Disk identifier: B0AB376D-6C89-4938-997F-0231BA5565AD
+
+
+#         Start          End    Size  Type            Name
+ 1         2048       411647    200M  EFI System      EFI System Partition
+ 2       411648      2508799      1G  Microsoft basic
+ 3      2508800   1953523711  930.3G  Linux LVM
+ 4   1953523712  11916394495    4.7T  Microsoft basic 4
+
+Disk /dev/mapper/centos-root: 53.7 GB, 53687091200 bytes, 104857600 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+
+
+Disk /dev/mapper/centos-swap: 16.7 GB, 16710107136 bytes, 32636928 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+
+
+Disk /dev/mapper/centos-home: 928.5 GB, 928514048000 bytes, 1813504000 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+
+[root@kerberos ~]# ll /dev/sd*
+brw-rw----. 1 root disk 8, 0 Jun 11 11:51 /dev/sda
+brw-rw----. 1 root disk 8, 1 Jun 11 11:51 /dev/sda1
+brw-rw----. 1 root disk 8, 2 Jun 11 11:51 /dev/sda2
+brw-rw----. 1 root disk 8, 3 Jun 11 11:51 /dev/sda3
+brw-rw----. 1 root disk 8, 4 Jun 11 11:51 /dev/sda4
+
+为新分区创建物理卷：
+[root@kerberos ~]# pvcreate /dev/sda4
+WARNING: ext4 signature detected on /dev/sda4 at offset 1080. Wipe it? [y/n]: y
+  Wiping ext4 signature on /dev/sda4.
+  Physical volume "/dev/sda4" successfully created.
+[root@kerberos ~]#
+[root@kerberos ~]#
+[root@kerberos ~]# pvdisplay
+  --- Physical volume ---
+  PV Name               /dev/sda3
+  VG Name               centos
+  PV Size               <930.32 GiB / not usable 4.00 MiB
+  Allocatable           yes
+  PE Size               4.00 MiB
+  Total PE              238160
+  Free PE               1
+  Allocated PE          238159
+  PV UUID               GHPyiO-b9ep-waGB-HMGp-pfkc-EJRq-dy43GW
+
+  "/dev/sda4" is a new physical volume of "<4.64 TiB"
+  --- NEW Physical volume ---
+  PV Name               /dev/sda4
+  VG Name
+  PV Size               <4.64 TiB
+  Allocatable           NO
+  PE Size               0
+  Total PE              0
+  Free PE               0
+  Allocated PE          0
+  PV UUID               wc8Ixa-ScHE-Bh5v-LclF-wUGz-UBcf-zPPu2S
+  
+  创建文件系统：
+  [root@kerberos ~]# /sbin/mkfs.xfs /dev/sda4
+mkfs.xfs: /dev/sda4 appears to contain an existing filesystem (LVM2_member).
+mkfs.xfs: Use the -f option to force overwrite.
+[root@kerberos ~]# /sbin/mkfs.xfs -f /dev/sda4
+meta-data=/dev/sda4              isize=512    agcount=5, agsize=268435455 blks
+         =                       sectsz=4096  attr=2, projid32bit=1
+         =                       crc=1        finobt=0, sparse=0
+data     =                       bsize=4096   blocks=1245358848, imaxpct=5
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal log           bsize=4096   blocks=521728, version=2
+         =                       sectsz=4096  sunit=1 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+
+扩展逻辑卷：
+[root@kerberos ~]# vgextend centos /dev/sda4
+WARNING: xfs signature detected on /dev/sda4 at offset 0. Wipe it? [y/n]: y
+  Wiping xfs signature on /dev/sda4.
+  Physical volume "/dev/sda4" successfully created.
+  Volume group "centos" successfully extended
+  
+扩展文件系统：
+[root@kerberos ~]#  lvdisplay
+  --- Logical volume ---
+  LV Path                /dev/centos/swap
+  LV Name                swap
+  VG Name                centos
+  LV UUID                lIO2y2-TCjq-H5Qz-jU0g-EbHf-S6jm-Wv9N9U
+  LV Write Access        read/write
+  LV Creation host, time localhost, 2019-04-12 00:36:43 -0400
+  LV Status              available
+  # open                 2
+  LV Size                15.56 GiB
+  Current LE             3984
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     256
+  Block device           253:1
+
+  --- Logical volume ---
+  LV Path                /dev/centos/home
+  LV Name                home
+  VG Name                centos
+  LV UUID                m8TeCh-ddeX-pqUR-vU2M-kTDF-AzD3-b3y49X
+  LV Write Access        read/write
+  LV Creation host, time localhost, 2019-04-12 00:36:44 -0400
+  LV Status              available
+  # open                 1
+  LV Size                <864.75 GiB
+  Current LE             221375
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     256
+  Block device           253:2
+
+  --- Logical volume ---
+  LV Path                /dev/centos/root
+  LV Name                root
+  VG Name                centos
+  LV UUID                w2chiR-m5ak-xcyL-xAVt-msGy-goNH-RB3PwV
+  LV Write Access        read/write
+  LV Creation host, time localhost, 2019-04-12 00:36:48 -0400
+  LV Status              available
+  # open                 1
+  LV Size                50.00 GiB
+  Current LE             12800
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     256
+  Block device           253:0
+[root@kerberos ~]# xfs_growfs /dev/mapper/centos-home
+meta-data=/dev/mapper/centos-home isize=512    agcount=4, agsize=56672000 blks
+         =                       sectsz=4096  attr=2, projid32bit=1
+         =                       crc=1        finobt=0 spinodes=0
+data     =                       bsize=4096   blocks=226688000, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal               bsize=4096   blocks=110687, version=2
+         =                       sectsz=4096  sunit=1 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+data blocks changed from 226688000 to 1469544448
+[root@kerberos ~]#
+[root@kerberos ~]#
+[root@kerberos ~]# df
+Filesystem               1K-blocks      Used  Available Use% Mounted on
+/dev/mapper/centos-root   52403200   6467556   45935644  13% /
+devtmpfs                   7933844         0    7933844   0% /dev
+tmpfs                      7950816         0    7950816   0% /dev/shm
+tmpfs                      7950816     11588    7939228   1% /run
+tmpfs                      7950816         0    7950816   0% /sys/fs/cgroup
+/dev/sda2                  1038336    191796     846540  19% /boot
+/dev/sda1                   204580     11428     193152   6% /boot/efi
+/dev/mapper/centos-home 5877735044 880600604 4997134440  15% /home
+tmpfs                      1590164         0    1590164   0% /run/user/0
+[root@kerberos ~]#
