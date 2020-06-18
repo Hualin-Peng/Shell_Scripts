@@ -22,7 +22,7 @@ https://www.microsoft.com/en-gb/download/details.aspx?id=45520 //Server Manager 
 
 Run in host PowerShell:
 Enable-WindowsOptionalFeature -online -FeatureName Microsoft-Hyper-V-Tools-All
-Set-Item WSMan:\localhost\Client\TrustedHosts "*" -Force
+Set-Item WSMan:\localhost\Client\TrustedHosts "*" -Force  //if err，do winrm quickconfig
 
 Run in host Shell:
 gpedit:
