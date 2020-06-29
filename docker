@@ -4,7 +4,6 @@ https://fedoraproject.org/wiki/EPEL
 
 docker install:
 https://docs.docker.com/engine/install/binaries/
-https://download.docker.com/mac/static/stable/x86_64/
 
 docker rm  -f  CONTAINER_ID
 docker rmi Image_ID
