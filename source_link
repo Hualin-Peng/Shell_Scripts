@@ -1,3 +1,6 @@
+dd bs=512 count=625139712 if=/dev/sdb of=/dev/sda status=progress
+zcat linux-OS.img.gz | dd of=/dev/sda status=progress
+=========================================================================
 汉明码：
 https://blog.csdn.net/qq_41113081/article/details/88242650
 ==========================================================================
