@@ -1,7 +1,7 @@
 ###################### ServerCore Config #########################
 Run in ServerCore shell:
     sconfig
-enter 2 change Computer as ServerCore
+enter 2 change Computer as ServerCore($NUM) //ensure no same computername in the same LAN
 enter 4 enable Remote Management
 enter 7 enable  Remote Desktop
 
