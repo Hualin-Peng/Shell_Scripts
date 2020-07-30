@@ -1,3 +1,6 @@
+高速卷积：
+https://baijiahao.baidu.com/s?id=1644627009606470144&wfr=spider&for=pc
+=========================================================================
 https://fedoraproject.org/wiki/EPEL
 =========================================================================
 dd bs=512 count=625139712 if=/dev/sdb of=/dev/sda status=progress
