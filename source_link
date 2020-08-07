@@ -1,3 +1,15 @@
+perf:
+https://www.cnblogs.com/zhiranok/archive/2012/08/13/context_switch_1.html
+==================
+apt-get install google-perftools libgoogle-perftools-dev
+ln -sf /usr/lib/x86_64-linux-gnu/libtcmalloc.so  /usr/lib/libtcmalloc.so
+==================
+perf record -F 99 -p $(thread_num)  -g -- sleep 30
+perf script -i perf.data &> perf.unfold
+./FlameGraph/stackcollapse-perf.pl perf.unfold &> perf.folded
+./FlameGraph/flamegraph.pl perf.folded > perf.svg
+
+==================
 高速卷积：
 https://www.cs.utexas.edu/~flame/pubs/GotoTOMS_revision.pdf
 https://baijiahao.baidu.com/s?id=1644627009606470144&wfr=spider&for=pc
