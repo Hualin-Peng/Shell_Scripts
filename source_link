@@ -1,3 +1,8 @@
+Failed to open /sysroot/etc/fstab:
+
+umount  /dev/dm-0
+xfs_repair -v -L /dev/dm-0
+=====================================================
 http://cwj95.com/510.html
 =====================================================
 https://www.cnblogs.com/roccoshi/category/1779754.html
