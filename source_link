@@ -1,3 +1,5 @@
+常数变易法
+====================================================
 ubuntu runlevel:
 sudo systemctl set-default runlevel3.target
 systemctl set-default runlevel5.target
