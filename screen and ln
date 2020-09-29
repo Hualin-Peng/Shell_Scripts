@@ -1,3 +1,10 @@
+文件系统同步：
+# xfs_growfs info /dev/centos/root    #检查数据块大小和数量
+
+# xfs_growfs /dev/centos/root -D 1986208  #将XFS文件扩展到1986208
+
+# xfs_growfs /dev/centos/root  #自动扩展XFS文件系统到最大的可用大小
+====================================================
 screen -S yourname -> 新建一个叫yourname的session
 screen -ls         -> 列出当前所有的session
 screen -r yourname -> 回到yourname这个session
