@@ -1,4 +1,4 @@
-常数变易法
+ssh-keygen -R 你要访问的IP地址
 ====================================================
 ubuntu runlevel:
 sudo systemctl set-default runlevel3.target
