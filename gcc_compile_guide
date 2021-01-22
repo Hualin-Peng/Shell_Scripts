@@ -14,3 +14,6 @@ Steps build gcc from sorce code.
         mkdir build && cd build
         ../configure --prefix=/home/gcc10/install --enable-threads=posix --disable-checking --disable-multilib --enable-languages=c,c++
         make
+        #######
+        export PATH=...$PATH
+        export LD_LIBRARY=...$LD_LIBRARY
